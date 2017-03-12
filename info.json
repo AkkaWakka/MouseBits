@@ -1,0 +1,11 @@
+{
+  "name": "MouseBits",
+  "version": "0.0.1",
+  "title": "Mouse Bits",
+  "author": "Akka-Wakka",
+  "contact": "",
+  "homepage": "",
+  "description": "Variouse tweaks for placing thins with the mouse.",
+  "factorio_version": "0.14",
+  "dependencies": ["base >= 0.14"]
+}
