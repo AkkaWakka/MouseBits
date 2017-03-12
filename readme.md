@@ -21,7 +21,8 @@ Pressing a hotkey will toggle its restriction, while changing or rotating the he
 ## Changelog.
 #### 0.1.0 - Initial Commit.
 - Added restrictions for X, Y, and Diagonals.
-## 0.1.1 - Quirk Fixes
+
+#### 0.1.1 - Quirk Fixes
 - Held item rotation reset base.
 - Made hotkeys togglable.  No more permanently in restricted mode! :)
 - Fixed the docs: changing items only resets the base.
