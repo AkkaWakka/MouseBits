@@ -52,25 +52,31 @@ local function use_current_item(player_index)
 end
 
 script.on_event("akka-mouse-1", function(event)
+  local player = game.players[event.player_index]
+  local toggle = akka.players[event.player_index].mouse1
   reset_player_state(event.player_index)
-  akka.players[event.player_index].mouse1 = true
+  akka.players[event.player_index].mouse1 = not toggle
 end)
 
 script.on_event("akka-mouse-2", function(event)
+  local player = game.players[event.player_index]
+  local toggle = akka.players[event.player_index].mouse2
   reset_player_state(event.player_index)
-  akka.players[event.player_index].mouse2 = true
+  akka.players[event.player_index].mouse2 = not toggle
 end)
 
 script.on_event("akka-mouse-3", function(event)
+  local player = game.players[event.player_index]
+  local toggle = akka.players[event.player_index].mouse3
   reset_player_state(event.player_index)
-  akka.players[event.player_index].mouse3 = true
+  akka.players[event.player_index].mouse3 = not toggle
 end)
 
 script.on_event(defines.events.on_player_cursor_stack_changed, function(event)
   local player = game.players[event.player_index]
   if not player.cursor_stack.valid_for_read or
     akka.players[event.player_index].item ~= player.cursor_stack.name then
-    reset_player_item(event.player_index)
+    reset_player_state(event.player_index)
   end
 end)
 script.on_event(defines.events.on_player_changed_surface, function(event)
