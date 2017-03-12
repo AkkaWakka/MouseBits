@@ -17,18 +17,6 @@ data:extend(
     name = "akka-mouse-3",
     key_sequence = "SHIFT + D",
     consuming = "script-only"
-  },
-  {
-    type = "custom-input",
-    name = "akka-mouse-leftClick",
-    key_sequence = "Left mouse button",
-    consuming = "script-only"
-  },
-  {
-    type = "custom-input",
-    name = "akka-mouse-middleClick",
-    key_sequence = "Middle mouse button",
-    consuming = "script-only"
   }
 }
 )
