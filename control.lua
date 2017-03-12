@@ -7,7 +7,7 @@ function akka.add_player(player_index)
   if not akka.players[player_index].mouse2 then akka.players[player_index].mouse2 = false end
   if not akka.players[player_index].mouse3 then akka.players[player_index].mouse3 = false end
   if not akka.players[player_index].item then akka.players[player_index].item = nil end
-  if not akka.players[player_index].rotation then akka.players[player_index].rotation = nil end
+  if not akka.players[player_index].direction then akka.players[player_index].direction = nil end
   if not akka.players[player_index].position then akka.players[player_index].position = {} end
 end
 
@@ -30,20 +30,18 @@ script.on_event(defines.events.on_tick, function(event)
     else add_all_players(game.players) end
   end
 end)
-    
 
+local function reset_player_item(player_index)
+  akka.players[player_index].item = nil
+  akka.players[player_index].direction = nil
+  akka.players[player_index].position = {}
+end
 
 local function reset_player_state(player_index)
   akka.players[player_index].mouse1 = false
   akka.players[player_index].mouse2 = false
   akka.players[player_index].mouse3 = false
-  akka.players[player_index].item = nil
-  akka.players[player_index].position = {}
-end
-
-local function reset_player_item(player_index)
-  akka.players[player_index].item = nil
-  akka.players[player_index].position = {}
+  reset_player_item(player_index)
 end
 
 local function use_current_item(player_index)
@@ -68,7 +66,6 @@ script.on_event("akka-mouse-3", function(event)
   akka.players[event.player_index].mouse3 = true
 end)
 
---TODO test rotation
 script.on_event(defines.events.on_player_cursor_stack_changed, function(event)
   local player = game.players[event.player_index]
   if not player.cursor_stack.valid_for_read or
@@ -79,7 +76,6 @@ end)
 script.on_event(defines.events.on_player_changed_surface, function(event)
   reset_player_item(event.player_index)
 end)
---script.on_event(defines.events.on_player.on_player_rotated_entity, function(event) reset_player_state(event.player_index) end)
 
 local function attempt_move_entity(player, entity, newPosition)
   local newEntity
@@ -111,10 +107,12 @@ script.on_event(defines.events.on_built_entity, function(event)
   local entity = event.created_entity
   local akkaPlayer = akka.players[event.player_index]
   if akkaPlayer.mouse1 or akkaPlayer.mouse2 or akkaPlayer.mouse3 then
-    if akkaPlayer.item ~= entity.name then
+    if akkaPlayer.item ~= entity.name or
+      akkaPlayer.direction ~= entity.direction then
       reset_player_item(event.player_index)
       akkaPlayer.item = entity.name
-      akkaPlayer.position = event.created_entity.position
+      akkaPlayer.direction = entity.direction
+      akkaPlayer.position = entity.position
     end
     if akkaPlayer.mouse1 and
       entity.position.x ~= akkaPlayer.position.x then
