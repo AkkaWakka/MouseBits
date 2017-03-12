@@ -2,27 +2,29 @@ data:extend(
 {
   {
     type = "custom-input",
-    name = "akka-mouse-1",
+    name = "akka-mouse1",
     key_sequence = "SHIFT + X",
     consuming = "script-only"
   },
   {
     type = "custom-input",
-    name = "akka-mouse-2",
+    name = "akka-mouse2",
     key_sequence = "SHIFT + Y",
     consuming = "script-only"
   },
   {
     type = "custom-input",
-    name = "akka-mouse-3",
+    name = "akka-mouse3",
     key_sequence = "SHIFT + D",
     consuming = "script-only"
   },
   {
     type = "custom-input",
-    name = "akka-mouse-4",
+    name = "akka-mouse4",
     key_sequence = "SHIFT + R",
     consuming = "script-only"
   }
 }
 )
+
+require("prototypes.styles")
