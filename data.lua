@@ -17,6 +17,12 @@ data:extend(
     name = "akka-mouse-3",
     key_sequence = "SHIFT + D",
     consuming = "script-only"
+  },
+  {
+    type = "custom-input",
+    name = "akka-mouse-4",
+    key_sequence = "SHIFT + R",
+    consuming = "script-only"
   }
 }
 )

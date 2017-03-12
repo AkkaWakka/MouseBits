@@ -72,6 +72,11 @@ script.on_event("akka-mouse-3", function(event)
   akka.players[event.player_index].mouse3 = not toggle
 end)
 
+script.on_event("akka-mouse-4", function(event)
+  local player = game.players[event.player_index]
+  reset_player_state(event.player_index)
+end)
+
 script.on_event(defines.events.on_player_cursor_stack_changed, function(event)
   local player = game.players[event.player_index]
   if not player.cursor_stack.valid_for_read or
