@@ -2,11 +2,11 @@ require("gui")
 
 if not global then global = {} end
 if not global.akka then global.akka = {} end
-akka = global.akka
+if not global.akka.players then global.akka.players = {} end
 
 function init_player(player_index)
-  if not akka.players[player_index] then akka.players[player_index] = {} end
-  local akkaPlayer = akka.players[player_index]
+  if not global.akka.players[player_index] then global.akka.players[player_index] = {} end
+  local akkaPlayer = global.akka.players[player_index]
   if not akkaPlayer.limitX then akkaPlayer.limitX = false end
   if not akkaPlayer.limitY then akkaPlayer.limitY = false end
   if not akkaPlayer.limitD then akkaPlayer.limitD = false end
@@ -18,9 +18,8 @@ function init_player(player_index)
 end
 
 function add_player(player_index)
-  if not akka.players then akka.players = {} end
   init_player(player_index)
-  add_button(game.players[player_index], akka.players[player_index])
+  add_button(game.players[player_index], global.akka.players[player_index])
 end
 function add_player_on_event(event) add_player(event.player_index) end
 
@@ -33,30 +32,30 @@ function add_all_game_players() add_all_players(game.players) end
 
 function add_on_tick(tick_event)
   if game.tick % 20 == 0 then
-    if akka and akka.players then
+    if global.akka and global.akka.players then
       for i, player in pairs(game.connected_players) do
-        if not akka.players[player.index] then add_player(player.index) end
+        if not global.akka.players[player.index] then add_player(player.index) end
       end
     else add_all_players(game.players) end
   end
 end
 
 function reset_item(player_index)
-  akka.players[player_index].item = nil
-  akka.players[player_index].direction = nil
-  akka.players[player_index].position = {}
+  global.akka.players[player_index].item = nil
+  global.akka.players[player_index].direction = nil
+  global.akka.players[player_index].position = {}
 end
 
 function reset_all(player_index)
-  akka.players[player_index].limitX = false
-  akka.players[player_index].limitY = false
-  akka.players[player_index].limitD = false
+  global.akka.players[player_index].limitX = false
+  global.akka.players[player_index].limitY = false
+  global.akka.players[player_index].limitD = false
   reset_item(player_index)
 end
 
 function gui_click_control(event)
   local player = game.players[event.player_index]
-  local akkaPlayer = akka.players[event.player_index]
+  local akkaPlayer = global.akka.players[event.player_index]
   local element = event.element
   if element.name == "akka-mouse-bits" then add_box(player, akkaPlayer)
   elseif element.name == "akka-mouse-bits-close" then add_button(player, akkaPlayer)
@@ -68,7 +67,7 @@ function gui_click_control(event)
 end
 
 function toggle_limitX(player_index)
-  local akkaPlayer = akka.players[player_index]
+  local akkaPlayer = global.akka.players[player_index]
   local toggle = akkaPlayer.limitX
   reset_all(player_index)
   akkaPlayer.limitX = not toggle
@@ -76,7 +75,7 @@ function toggle_limitX(player_index)
 end
 
 function toggle_limitY(player_index)
-  local akkaPlayer = akka.players[player_index]
+  local akkaPlayer = global.akka.players[player_index]
   local toggle = akkaPlayer.limitY
   reset_all(player_index)
   akkaPlayer.limitY = not toggle
@@ -84,7 +83,7 @@ function toggle_limitY(player_index)
 end
 
 function toggle_limitD(player_index)
-  local akkaPlayer = akka.players[player_index]
+  local akkaPlayer = global.akka.players[player_index]
   local toggle = akkaPlayer.limitD
   reset_all(player_index)
   akkaPlayer.limitD = not toggle
@@ -92,7 +91,7 @@ function toggle_limitD(player_index)
 end
 
 function limit_reset(player_index)
-  local akkaPlayer = akka.players[player_index]
+  local akkaPlayer = global.akka.players[player_index]
   reset_all(player_index)
   update_box(akkaPlayer)
 end
@@ -100,7 +99,7 @@ end
 function on_cursor_change(event)
   local player = game.players[event.player_index]
   if not player.cursor_stack.valid_for_read or
-    akka.players[event.player_index].item ~= player.cursor_stack.name then
+    global.akka.players[event.player_index].item ~= player.cursor_stack.name then
     limit_reset(event.player_index)
   end
 end
@@ -135,7 +134,7 @@ end
 function on_build(event)
   local player = game.players[event.player_index]
   local entity = event.created_entity
-  local akkaPlayer = akka.players[event.player_index]
+  local akkaPlayer = global.akka.players[event.player_index]
   if akkaPlayer.limitX or akkaPlayer.limitY or akkaPlayer.limitD then
     if akkaPlayer.item ~= entity.name or
       akkaPlayer.direction ~= entity.direction then

@@ -23,14 +23,14 @@ local function limit_info_item(identifier, container, akkaPlayer)
     style = "akka_table"
   })
   container[identifier].add({
-    type = "label",
-    name = identifier.."-label",
-    caption = {"controls.akka-"..identifier}
-  })
-  container[identifier].add({
     type = "radiobutton",
     name = "akka-"..identifier.."-radio",
     state = akkaPlayer[identifier]
+  })
+  container[identifier].add({
+    type = "label",
+    name = identifier.."-label",
+    caption = {"controls.akka-"..identifier}
   })
 end
 
@@ -49,14 +49,14 @@ function add_box(player, akkaPlayer)
     style = "akka_table"
   })
   box.top.add({
-    type = "label",
-    name = "title",
-    caption = {"title.akka-mouse-bits"}
-  })
-  box.top.add({
     type = "button",
     name = "akka-mouse-bits-close",
     style = "akka_close"
+  })
+  box.top.add({
+    type = "label",
+    name = "title",
+    caption = {"title.akka-mouse-bits"}
   })
   limit_info_item("limitX", box, akkaPlayer)
   limit_info_item("limitY", box, akkaPlayer)
