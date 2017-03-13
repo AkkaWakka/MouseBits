@@ -1,9 +1,18 @@
 ## Description:
-This mod currently adds two hotkeys that allow you to restrict the placement of items in the x or y directions. There is a third hotkey that restricts placement to diagonal lines (x=y & x=-y).
+Lets you restrict item placement in North/South, East/West, and diagonal lines Northeast/Southwest & Northwest/Southeast), making it easier to place things in straight lines without having to hold the mouse still and walk in a direction.
 
-The first item placed will set the placement 'base', and further items will only be placed on the same x, y, or diagonal as the base item. You can place items at an offset from the allowed line and they will automagically be placed on on the allowed line at the closest point. You cannot place items beyond your reach.
+The first item placed sets the base for the restriction, with further items only allowed on the same x, y, or diagonal line as the base.
 
-Pressing a hotkey will toggle its restriction, while changing or rotating the held item will reset the base.
+Items placed at an offset from the allowed line will be moved to the allowed line at the closest point from where you placed the itme. You cannot place items beyond your reach.
+
+Placement restrictions can be controlled with either hotkeys or a GUI, and will be reset when your hand empties, or you change or rotate items.
+
+If you have any comments, suggestions, etc., I'd really apriciate your feedback: [Factorio Forum Post](https://forums.factorio.com/viewtopic.php?f=97&t=42641) | [GitHub Issues](https://github.com/AkkaWakka/MouseBits/issues).
+
+## Controls
+Pressing a hotkey will enable a restriction (regardless of what restriction is currently active), pressing the same hotkey again will disable it.  Pressing the reset button will remove any placement restriction.
+
+The GUI can be accessed by pressing the mouse pointer button on the left of the screen.  It has toggles for all the restrictions, and will indicate the current restriction state.  Pressing the remove restriction button will remove any active restriction.
 
 ## Default Hotkeys
 - Restrict to X line: Shift + X
@@ -15,7 +24,6 @@ Pressing a hotkey will toggle its restriction, while changing or rotating the he
 - Extra sounds and dust sprites when placing something. This is due to the way the building restriction is applied (entities are copied, and the original is deleted).
 
 ## Planned Features:
-- Add a simple GUI to display the currently selected restriction (if any) and allow toggling with the mouse.
 - Support for placement in patterns (e.g. only place every 5th or only 2 out of 4 (I'm looking at you inserters), etc.). This may involve some technology, but I'm not looking to replace blueprints.
 
 ## Changelog:
@@ -28,5 +36,6 @@ Pressing a hotkey will toggle its restriction, while changing or rotating the he
 - Fixed the docs: changing items only resets the base.
 
 #### 0.2.0 - GUI Added
-- 
+- Added simple GUI to indicate restriction state.
 - Added hotkey to reset all restrictions.
+- Basic code refactor.

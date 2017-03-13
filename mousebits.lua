@@ -7,9 +7,9 @@ akka = global.akka
 function init_player(player_index)
   if not akka.players[player_index] then akka.players[player_index] = {} end
   local akkaPlayer = akka.players[player_index]
-  if not akkaPlayer.mouse1 then akkaPlayer.mouse1 = false end
-  if not akkaPlayer.mouse2 then akkaPlayer.mouse2 = false end
-  if not akkaPlayer.mouse3 then akkaPlayer.mouse3 = false end
+  if not akkaPlayer.limitX then akkaPlayer.limitX = false end
+  if not akkaPlayer.limitY then akkaPlayer.limitY = false end
+  if not akkaPlayer.limitD then akkaPlayer.limitD = false end
   if not akkaPlayer.item then akkaPlayer.item = nil end
   if not akkaPlayer.direction then akkaPlayer.direction = nil end
   if not akkaPlayer.position then akkaPlayer.position = nil end
@@ -48,9 +48,9 @@ function reset_item(player_index)
 end
 
 function reset_all(player_index)
-  akka.players[player_index].mouse1 = false
-  akka.players[player_index].mouse2 = false
-  akka.players[player_index].mouse3 = false
+  akka.players[player_index].limitX = false
+  akka.players[player_index].limitY = false
+  akka.players[player_index].limitD = false
   reset_item(player_index)
 end
 
@@ -60,36 +60,48 @@ function gui_click_control(event)
   local element = event.element
   if element.name == "akka-mouse-bits" then add_box(player, akkaPlayer)
   elseif element.name == "akka-mouse-bits-close" then add_button(player, akkaPlayer)
-  elseif element.name == "akka-mouse1-radio" then update_box(akkaPlayer)
-  elseif element.name == "akka-mouse2-radio" then update_box(akkaPlayer)
-  elseif element.name == "akka-mouse3-radio" then update_box(akkaPlayer)
-  elseif element.name == "akka-reset-all" then update_box(akkaPlayer)
+  elseif element.name == "akka-limitX-radio" then toggle_limitX(player.index)
+  elseif element.name == "akka-limitY-radio" then toggle_limitY(player.index)
+  elseif element.name == "akka-limitD-radio" then toggle_limitD(player.index)
+  elseif element.name == "akka-reset-all" then limit_reset(player.index)
   end
 end
 
-function toggle_mouse1(player_index)
-  local toggle = akka.players[player_index].mouse1
+function toggle_limitX(player_index)
+  local akkaPlayer = akka.players[player_index]
+  local toggle = akkaPlayer.limitX
   reset_all(player_index)
-  akka.players[player_index].mouse1 = not toggle
+  akkaPlayer.limitX = not toggle
+  update_box(akkaPlayer)
 end
 
-function toggle_mouse2(player_index)
-  local toggle = akka.players[player_index].mouse2
+function toggle_limitY(player_index)
+  local akkaPlayer = akka.players[player_index]
+  local toggle = akkaPlayer.limitY
   reset_all(player_index)
-  akka.players[player_index].mouse2 = not toggle
+  akkaPlayer.limitY = not toggle
+  update_box(akkaPlayer)
 end
 
-function toggle_mouse3(player_index)
-  local toggle = akka.players[player_index].mouse3
+function toggle_limitD(player_index)
+  local akkaPlayer = akka.players[player_index]
+  local toggle = akkaPlayer.limitD
   reset_all(player_index)
-  akka.players[player_index].mouse3 = not toggle
+  akkaPlayer.limitD = not toggle
+  update_box(akkaPlayer)
+end
+
+function limit_reset(player_index)
+  local akkaPlayer = akka.players[player_index]
+  reset_all(player_index)
+  update_box(akkaPlayer)
 end
 
 function on_cursor_change(event)
   local player = game.players[event.player_index]
   if not player.cursor_stack.valid_for_read or
     akka.players[event.player_index].item ~= player.cursor_stack.name then
-    reset_all(event.player_index)
+    limit_reset(event.player_index)
   end
 end
 
@@ -124,7 +136,7 @@ function on_build(event)
   local player = game.players[event.player_index]
   local entity = event.created_entity
   local akkaPlayer = akka.players[event.player_index]
-  if akkaPlayer.mouse1 or akkaPlayer.mouse2 or akkaPlayer.mouse3 then
+  if akkaPlayer.limitX or akkaPlayer.limitY or akkaPlayer.limitD then
     if akkaPlayer.item ~= entity.name or
       akkaPlayer.direction ~= entity.direction then
       reset_item(event.player_index)
@@ -132,15 +144,15 @@ function on_build(event)
       akkaPlayer.direction = entity.direction
       akkaPlayer.position = entity.position
     end
-    if akkaPlayer.mouse1 and
+    if akkaPlayer.limitX and
       entity.position.x ~= akkaPlayer.position.x then
       attempt_move_entity(player, entity, {x = akkaPlayer.position.x, y = entity.position.y})
     end
-    if akkaPlayer.mouse2 and
+    if akkaPlayer.limitY and
       entity.position.y ~= akkaPlayer.position.y then
       attempt_move_entity(player, entity, {y = akkaPlayer.position.y, x = entity.position.x})
     end
-    if akkaPlayer.mouse3 then
+    if akkaPlayer.limitD then
       local diffX = entity.position.x - akkaPlayer.position.x
       local diffY = entity.position.y - akkaPlayer.position.y
       local absX = math.abs(diffX)

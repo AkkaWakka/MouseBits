@@ -15,7 +15,7 @@ function add_button(player, akkaPlayer)
   })
 end
 
-local function mouse_info_item(identifier, container, akkaPlayer)
+local function limit_info_item(identifier, container, akkaPlayer)
   container.add({
     type = "table",
     name = identifier,
@@ -49,23 +49,23 @@ function add_box(player, akkaPlayer)
     style = "akka_table"
   })
   box.top.add({
-    type = "button",
-    name = "akka-mouse-bits-close",
-    style = "akka_close"
-  })
-  box.top.add({
     type = "label",
     name = "title",
     caption = {"title.akka-mouse-bits"}
   })
-  mouse_info_item("mouse1", box, akkaPlayer)
-  mouse_info_item("mouse2", box, akkaPlayer)
-  mouse_info_item("mouse3", box, akkaPlayer)
+  box.top.add({
+    type = "button",
+    name = "akka-mouse-bits-close",
+    style = "akka_close"
+  })
+  limit_info_item("limitX", box, akkaPlayer)
+  limit_info_item("limitY", box, akkaPlayer)
+  limit_info_item("limitD", box, akkaPlayer)
   box.add({
     type = "button",
     name = "akka-reset-all",
     style = "button_style",
-    caption = {"controls.akka-mouse4"}
+    caption = {"controls.akka-reset"}
   })
 end
 
@@ -75,8 +75,8 @@ function update_box(akkaPlayer)
     akkaPlayer.gui.valid and
     akkaPlayer.gui.name == "akka_box" then
     local gui = akkaPlayer.gui
-    gui.mouse1["akka-mouse1-raido"].state = akkaPlayer.mouse1
-    gui.mouse2["akka-mouse2-raido"].state = akkaPlayer.mouse2
-    gui.mouse3["akka-mouse3-raido"].state = akkaPlayer.mouse3
+    gui.limitX["akka-limitX-radio"].state = akkaPlayer.limitX
+    gui.limitY["akka-limitY-radio"].state = akkaPlayer.limitY
+    gui.limitD["akka-limitD-radio"].state = akkaPlayer.limitD
   end
 end

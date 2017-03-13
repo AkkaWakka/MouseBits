@@ -11,10 +11,10 @@ script.on_event(defines.events.on_tick, add_on_tick)
 script.on_event(defines.events.on_gui_click, gui_click_control)
 
 -- Key Events
-script.on_event("akka-mouse1", function(event) toggle_mouse1(event.player_index) end)
-script.on_event("akka-mouse2", function(event) toggle_mouse2(event.player_index) end)
-script.on_event("akka-mouse3", function(event) toggle_mouse3(event.player_index) end)
-script.on_event("akka-mouse4", function(event) reset_all(event.player_index) end)
+script.on_event("akka-limitX", function(event) toggle_limitX(event.player_index) end)
+script.on_event("akka-limitY", function(event) toggle_limitY(event.player_index) end)
+script.on_event("akka-limitD", function(event) toggle_limitD(event.player_index) end)
+script.on_event("akka-reset", function(event) limit_reset(event.player_index) end)
 
 -- Important State Changes
 script.on_event(defines.events.on_player_cursor_stack_changed, on_cursor_change)
