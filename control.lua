@@ -16,8 +16,9 @@ script.on_event("akka-limitY", function(event) toggle_limitY(event.player_index)
 script.on_event("akka-limitD", function(event) toggle_limitD(event.player_index) end)
 script.on_event("akka-reset", function(event) limit_reset(event.player_index) end)
 
--- Important State Changes
+-- Important Player State Changes
 script.on_event(defines.events.on_player_cursor_stack_changed, on_cursor_change)
 script.on_event(defines.events.on_player_changed_surface, function(event) reset_player_item(event.player_index) end)
 
+-- Main Placement Restriction Trigger
 script.on_event(defines.events.on_built_entity, on_build)

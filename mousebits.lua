@@ -68,25 +68,22 @@ end
 
 function toggle_limitX(player_index)
   local akkaPlayer = global.akka.players[player_index]
-  local toggle = akkaPlayer.limitX
   reset_all(player_index)
-  akkaPlayer.limitX = not toggle
+  akkaPlayer.limitX = true
   update_box(akkaPlayer)
 end
 
 function toggle_limitY(player_index)
   local akkaPlayer = global.akka.players[player_index]
-  local toggle = akkaPlayer.limitY
   reset_all(player_index)
-  akkaPlayer.limitY = not toggle
+  akkaPlayer.limitY = true
   update_box(akkaPlayer)
 end
 
 function toggle_limitD(player_index)
   local akkaPlayer = global.akka.players[player_index]
-  local toggle = akkaPlayer.limitD
   reset_all(player_index)
-  akkaPlayer.limitD = not toggle
+  akkaPlayer.limitD = true
   update_box(akkaPlayer)
 end
 
@@ -98,8 +95,10 @@ end
 
 function on_cursor_change(event)
   local player = game.players[event.player_index]
+  local akkaPlayer = global.akka.players[event.player_index]
   if not player.cursor_stack.valid_for_read or
-    global.akka.players[event.player_index].item ~= player.cursor_stack.name then
+    (akkaPlayer.item ~= nil and
+    player.cursor_stack.name ~= akkaPlayer.item) then
     limit_reset(event.player_index)
   end
 end
