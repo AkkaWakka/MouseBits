@@ -143,12 +143,12 @@ function on_build(event)
       akkaPlayer.position = entity.position
     end
     if akkaPlayer.onlyX and
-      entity.position.x ~= akkaPlayer.position.x then
-      attempt_move_entity(player, entity, {x = akkaPlayer.position.x, y = entity.position.y})
+      entity.position.y ~= akkaPlayer.position.y then
+      attempt_move_entity(player, entity, {x = entity.position.x, y = akkaPlayer.position.y})
     end
     if akkaPlayer.onlyY and
-      entity.position.y ~= akkaPlayer.position.y then
-      attempt_move_entity(player, entity, {y = akkaPlayer.position.y, x = entity.position.x})
+      entity.position.x ~= akkaPlayer.position.x then
+      attempt_move_entity(player, entity, {y = entity.position.y, x = akkaPlayer.position.x})
     end
     if akkaPlayer.onlyD then
       local diffX = entity.position.x - akkaPlayer.position.x
