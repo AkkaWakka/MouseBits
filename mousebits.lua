@@ -105,20 +105,19 @@ end
 
 function attempt_move_entity(player, entity, newPosition)
   local newEntity
-  if entity.surface.can_place_entity({
+  local entity_table = {
     name = entity.name,
     position = newPosition, 
     direction = entity.direction, 
     force = entity.force
-  }) then
-    newEntity = entity.surface.create_entity({
-      name = entity.name,
-      position = newPosition,
-      direction = entity.direction,
-      force = entity.force
-    })
+  }
+  if entity.name == "entity-ghost" then
+    entity_table["inner_name"] = entity.ghost_name
   end
-  if not newEntity or not player.can_reach_entity(newEntity) then
+  if entity.surface.can_place_entity(entity_table) then
+    newEntity = entity.surface.create_entity(entity_table)
+  end
+  if (not newEntity or not player.can_reach_entity(newEntity)) and entity.name ~= "entity-ghost" then
     local cursor_stack = player.cursor_stack
     if cursor_stack.valid_for_read and cursor_stack.name == entity.name then
       cursor_stack.count = cursor_stack.count + 1
