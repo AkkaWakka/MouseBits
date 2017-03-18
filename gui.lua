@@ -8,7 +8,7 @@ end
 
 function add_button(player, akkaPlayer)
   destroy_gui(akkaPlayer)
-  akkaPlayer.gui = player.gui.left.add({
+  akkaPlayer.gui = player.gui.top.add({
     type="button",
     name="akka-mouse-bits",
     style="akka_pointer"
@@ -36,7 +36,7 @@ end
 
 function add_box(player, akkaPlayer)
   destroy_gui(akkaPlayer)
-  akkaPlayer.gui = player.gui.left.add({
+  akkaPlayer.gui = player.gui.top.add({
     type = "frame",
     name = "akka_box",
     direction = "vertical"
