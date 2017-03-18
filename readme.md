@@ -19,6 +19,7 @@ The GUI can be accessed by pressing the mouse pointer button on the left of the 
 - Restrict to Y line: Shift + Y
 - Restrict to diagonals: Shift + D
 - Remove all restrictions: Shift + R
+- Reset base: Shift + Left mouse button
 
 ## Known Quirks/Issues:
 - Extra sounds and dust sprites when placing something. This is due to the way the building restriction is applied (entities are copied, and the original is deleted).
@@ -26,7 +27,7 @@ The GUI can be accessed by pressing the mouse pointer button on the left of the 
 ## Planned Features:
 - Support for placement in patterns (e.g. only place every 5th or only 2 out of 4 (I'm looking at you inserters), etc.). This may involve some technology, but I'm not looking to replace blueprints.
 - Definable gap between placements (e.g. every 3 tiles).  Would be nice to tie this in with the patterns idea (e.g. a 5 tile patter is repeated every 10 tiles).
-- Click and drag settings coppying (Shift + Right Click -> Shift + Left Click).
+- Click and drag settings copying (Shift + Right Click -> Shift + Left Click).
 
 ## Changelog:
 #### 0.1.0 - Initial Commit
@@ -42,6 +43,10 @@ The GUI can be accessed by pressing the mouse pointer button on the left of the 
 - Added hotkey to reset all restrictions.
 - Basic code refactor.
 
-#### 0.2.1 - Useability Tweaks
+#### 0.2.1 - Usability Tweaks
 - Restriction buttons now only turn their restriction on.
 - Restrictions aren't reset when your hand is no longer empty.
+
+### 0.2.2 - Fixes/Useability
+- Swapped axis restrictions so they're more intuitive (+ some renaming).
+- Added a hotkey/click to reset the base only.

@@ -15,7 +15,7 @@ function add_button(player, akkaPlayer)
   })
 end
 
-local function limit_info_item(identifier, container, akkaPlayer)
+local function axis_info_item(identifier, container, akkaPlayer)
   container.add({
     type = "table",
     name = identifier,
@@ -58,9 +58,9 @@ function add_box(player, akkaPlayer)
     name = "title",
     caption = {"title.akka-mouse-bits"}
   })
-  limit_info_item("limitX", box, akkaPlayer)
-  limit_info_item("limitY", box, akkaPlayer)
-  limit_info_item("limitD", box, akkaPlayer)
+  axis_info_item("onlyX", box, akkaPlayer)
+  axis_info_item("onlyY", box, akkaPlayer)
+  axis_info_item("onlyD", box, akkaPlayer)
   box.add({
     type = "button",
     name = "akka-reset-all",
@@ -75,8 +75,8 @@ function update_box(akkaPlayer)
     akkaPlayer.gui.valid and
     akkaPlayer.gui.name == "akka_box" then
     local gui = akkaPlayer.gui
-    gui.limitX["akka-limitX-radio"].state = akkaPlayer.limitX
-    gui.limitY["akka-limitY-radio"].state = akkaPlayer.limitY
-    gui.limitD["akka-limitD-radio"].state = akkaPlayer.limitD
+    gui.onlyX["akka-onlyX-radio"].state = akkaPlayer.onlyX
+    gui.onlyY["akka-onlyY-radio"].state = akkaPlayer.onlyY
+    gui.onlyD["akka-onlyD-radio"].state = akkaPlayer.onlyD
   end
 end
