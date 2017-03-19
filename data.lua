@@ -27,7 +27,7 @@ data:extend(
   {
     type = "custom-input",
     name = "akka-base-reset",
-    key_sequence = "SHIFT",
+    key_sequence = "ALT",
     consuming = "script-only"
   }
 }

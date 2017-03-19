@@ -10,7 +10,7 @@ Placement restrictions can be controlled with either hotkeys or a GUI, and will 
 If you have any comments, suggestions, etc., I'd really appreciate your feedback: [Factorio Forum Post](https://forums.factorio.com/viewtopic.php?f=97&t=42641) | [GitHub Issues](https://github.com/AkkaWakka/MouseBits/issues).
 
 ## Controls:
-Pressing a hotkey will enable its restriction (regardless of what restriction is currently active), pressing the same hotkey again will reset the base.  Pressing the reset button will remove any active restriction.
+Pressing a hotkey will enable its restriction (regardless of what restriction is currently active), pressing the same hotkey again will reset the base.  Pressing the reset button will remove any active restriction.  There is a hotkey to reset only the item base.
 
 The GUI can be accessed by pressing the mouse pointer button on the left of the screen.  It has toggles for all the restrictions, and will indicate the current restriction state.  Clicking an already applied restriction will reset the base.  Pressing the remove restriction button will remove any active restriction.
 
@@ -19,7 +19,7 @@ The GUI can be accessed by pressing the mouse pointer button on the left of the 
 - Restrict to Y line: Shift + Y
 - Restrict to diagonals: Shift + D
 - Remove all restrictions: Shift + R
-- Reset base: Shift + Left mouse button
+- Reset base: Alt
 
 ## Known Quirks/Issues:
 - Extra sounds and dust sprites when placing something. This is due to the way the building restriction is applied (entities are copied, and the original is deleted).
@@ -50,3 +50,4 @@ The GUI can be accessed by pressing the mouse pointer button on the left of the 
 ### 0.2.2 - Fixes/Useability
 - Swapped axis restrictions so they're more intuitive (+ some renaming).
 - Added a hotkey/click to reset the base only.
+- Accidentally fixed an bad function reference that caused issues with Factorissimo.  Yay for refactoring.
