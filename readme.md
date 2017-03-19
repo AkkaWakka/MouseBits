@@ -47,7 +47,10 @@ The GUI can be accessed by pressing the mouse pointer button on the left of the 
 - Restriction buttons now only turn their restriction on.
 - Restrictions aren't reset when your hand is no longer empty.
 
-### 0.2.2 - Fixes/Usability
+#### 0.2.2 - Fixes/Usability
 - Swapped axis restrictions so they're more intuitive (+ some renaming).
 - Added a hotkey/click to reset the base only.
 - Accidentally fixed an bad function reference that caused issues with Factorissimo.  Yay for refactoring.
+
+#### 0.2.3 - Hotkey Quick Fix
+- Hotkey Derp.  Fixed Now.
