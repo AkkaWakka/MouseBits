@@ -54,3 +54,6 @@ The GUI can be accessed by pressing the mouse pointer button on the left of the 
 
 #### 0.2.3 - Hotkey Quick Fix
 - Hotkey Derp.  Fixed Now.
+
+#### 0.3.0 - Patterns!
+

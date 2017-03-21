@@ -1,4 +1,6 @@
 require("gui")
+require("xyd")
+require("pattern")
 
 if not global then global = {} end
 if not global.akka then global.akka = {} end
@@ -7,12 +9,18 @@ if not global.akka.players then global.akka.players = {} end
 function init_player(player_index)
   if not global.akka.players[player_index] then global.akka.players[player_index] = {} end
   local akkaPlayer = global.akka.players[player_index]
-  if not akkaPlayer.onlyX then akkaPlayer.onlyX = false end
-  if not akkaPlayer.onlyY then akkaPlayer.onlyY = false end
-  if not akkaPlayer.onlyD then akkaPlayer.onlyD = false end
   if not akkaPlayer.item then akkaPlayer.item = nil end
   if not akkaPlayer.direction then akkaPlayer.direction = nil end
   if not akkaPlayer.position then akkaPlayer.position = nil end
+  if not akkaPlayer.onlyX then akkaPlayer.onlyX = false end
+  if not akkaPlayer.onlyY then akkaPlayer.onlyY = false end
+  if not akkaPlayer.onlyD then akkaPlayer.onlyD = false end
+  if not akkaPlayer.patternState then akkaPlayer.patternState = false end
+  if not akkaPlayer.patternSlots then akkaPlayer.patternSlots = 4 end
+  if not akkaPlayer.pattern then akkaPlayer.pattern = {} end
+  for i = 1, akkaPlayer.patternSlots, 1 do
+    if not akkaPlayer.pattern[i] then akkaPlayer.pattern[i] = true end
+  end
   if akkaPlayer.gui then akkaPlayer.gui.destroy() end
   akkaPlayer.gui = nil
 end
@@ -40,19 +48,6 @@ function add_on_tick(tick_event)
   end
 end
 
-function reset_item(player_index)
-  global.akka.players[player_index].item = nil
-  global.akka.players[player_index].direction = nil
-  global.akka.players[player_index].position = {}
-end
-
-function reset_all(player_index)
-  global.akka.players[player_index].onlyX = false
-  global.akka.players[player_index].onlyY = false
-  global.akka.players[player_index].onlyD = false
-  reset_item(player_index)
-end
-
 function gui_click_control(event)
   local player = game.players[event.player_index]
   local akkaPlayer = global.akka.players[event.player_index]
@@ -63,105 +58,55 @@ function gui_click_control(event)
   elseif element.name == "akka-onlyY-radio" then toggle_onlyY(player.index)
   elseif element.name == "akka-onlyD-radio" then toggle_onlyD(player.index)
   elseif element.name == "akka-reset-all" then axis_reset(player.index)
+  elseif element.name == "akka-patterns-state" then toggle_pattern(player.index)
+  elseif string.sub(element.name, 1, -2) == "akka-pattern-check-" then
+    update_pattern(akkaPlayer, tonumber(string.sub(element.name, -1)), element.state)
   end
 end
 
-function toggle_onlyX(player_index)
+function reset_base(player_index)
   local akkaPlayer = global.akka.players[player_index]
-  reset_all(player_index)
-  akkaPlayer.onlyX = true
-  update_box(akkaPlayer)
+  akkaPlayer.item = nil
+  akkaPlayer.direction = nil
+  akkaPlayer.position = {}
 end
 
-function toggle_onlyY(player_index)
-  local akkaPlayer = global.akka.players[player_index]
-  reset_all(player_index)
-  akkaPlayer.onlyY = true
-  update_box(akkaPlayer)
+local function set_base(player, akkaPlayer, entity)
+  if akkaPlayer.item ~= entity.name or
+    akkaPlayer.direction ~= entity.direction then
+    reset_base(player.index)
+    akkaPlayer.item = entity.name
+    akkaPlayer.direction = entity.direction
+    akkaPlayer.position = entity.position
+  end
 end
 
-function toggle_onlyD(player_index)
-  local akkaPlayer = global.akka.players[player_index]
-  reset_all(player_index)
-  akkaPlayer.onlyD = true
-  update_box(akkaPlayer)
-end
-
-function axis_reset(player_index)
-  local akkaPlayer = global.akka.players[player_index]
-  reset_all(player_index)
-  update_box(akkaPlayer)
-end
-
-function on_cursor_change(event)
+function build_event_control(event)
   local player = game.players[event.player_index]
+  local entity = event.created_entity
   local akkaPlayer = global.akka.players[event.player_index]
-  if not player.cursor_stack.valid_for_read or
-    (akkaPlayer.item ~= nil and
-    player.cursor_stack.name ~= akkaPlayer.item) then
-    axis_reset(event.player_index)
+  if akkaPlayer.onlyX or
+    akkaPlayer.onlyY or
+    akkaPlayer.onlyD or
+    akkaPlayer.patternState then
+    if akkaPlayer.item ~= entity.name or
+      akkaPlayer.direction ~= entity.direction then
+      set_base(player, akkaPlayer, entity)
+    end
+    local axis_entity = axis_build(player, entity, akkaPlayer)
+    if axis_entity and akkaPlayer.patternState then
+      pattern_build(player, axis_entity, akkaPlayer)
+    end
   end
 end
 
-function attempt_move_entity(player, entity, newPosition)
-  local newEntity
-  local entity_table = {
-    name = entity.name,
-    position = newPosition, 
-    direction = entity.direction, 
-    force = entity.force
-  }
-  if entity.name == "entity-ghost" then
-    entity_table["inner_name"] = entity.ghost_name
-  end
-  if entity.surface.can_place_entity(entity_table) then
-    newEntity = entity.surface.create_entity(entity_table)
-  end
-  if (not newEntity or not player.can_reach_entity(newEntity)) and entity.name ~= "entity-ghost" then
+function give_back(player, entity)
+  if entity.name ~= "entity-ghost" then
     local cursor_stack = player.cursor_stack
     if cursor_stack.valid_for_read and cursor_stack.name == entity.name then
       cursor_stack.count = cursor_stack.count + 1
     else
       player.get_inventory(defines.inventory.player_main).insert({name = entity.name})
-    end
-  end
-  entity.destroy()
-  if newEntity and not player.can_reach_entity(newEntity) then newEntity.destroy() end
-end
-
-function on_build(event)
-  local player = game.players[event.player_index]
-  local entity = event.created_entity
-  local akkaPlayer = global.akka.players[event.player_index]
-  if akkaPlayer.onlyX or akkaPlayer.onlyY or akkaPlayer.onlyD then
-    if akkaPlayer.item ~= entity.name or
-      akkaPlayer.direction ~= entity.direction then
-      reset_item(event.player_index)
-      akkaPlayer.item = entity.name
-      akkaPlayer.direction = entity.direction
-      akkaPlayer.position = entity.position
-    end
-    if akkaPlayer.onlyX and
-      entity.position.y ~= akkaPlayer.position.y then
-      attempt_move_entity(player, entity, {x = entity.position.x, y = akkaPlayer.position.y})
-    end
-    if akkaPlayer.onlyY and
-      entity.position.x ~= akkaPlayer.position.x then
-      attempt_move_entity(player, entity, {y = entity.position.y, x = akkaPlayer.position.x})
-    end
-    if akkaPlayer.onlyD then
-      local diffX = entity.position.x - akkaPlayer.position.x
-      local diffY = entity.position.y - akkaPlayer.position.y
-      local absX = math.abs(diffX)
-      local absY = math.abs(diffY)
-      if absX ~= absY then
-        local change = math.floor((absX + absY) / 2)
-        local signX = diffX / absX
-        local signY = diffY / absY
-        local newX = akkaPlayer.position.x + (signX * change)
-        local newY = akkaPlayer.position.y + (signY * change)
-        attempt_move_entity(player, entity, {x = newX, y = newY})
-      end
     end
   end
 end
