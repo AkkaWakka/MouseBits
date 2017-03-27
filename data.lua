@@ -29,12 +29,6 @@ data:extend(
     name = "akka-base-reset",
     key_sequence = "SHIFT_L",
     consuming = "script-only"
-  },
-  {
-    type = "custom-input",
-    name = "akka-pattern-toggle",
-    key_sequence = "SHIFT + Z",
-    consuming = "script-only"
   }
 }
 )

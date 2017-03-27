@@ -15,8 +15,9 @@ function init_player(player_index)
   if not akkaPlayer.onlyX then akkaPlayer.onlyX = false end
   if not akkaPlayer.onlyY then akkaPlayer.onlyY = false end
   if not akkaPlayer.onlyD then akkaPlayer.onlyD = false end
-  if not akkaPlayer.patternState then akkaPlayer.patternState = false end
-  if not akkaPlayer.patternSlots then akkaPlayer.patternSlots = 4 end
+  if not akkaPlayer.spacing then akkaPlayer.spacing = 0 end
+  if not akkaPlayer.patternSlots then akkaPlayer.patternSlots = 0 end
+  if not akkaPlayer.patternMax then akkaPlayer.patternMax = 8 end
   if not akkaPlayer.pattern then akkaPlayer.pattern = {} end
   for i = 1, akkaPlayer.patternSlots, 1 do
     if not akkaPlayer.pattern[i] then akkaPlayer.pattern[i] = true end
@@ -48,53 +49,81 @@ function add_on_tick(tick_event)
   end
 end
 
-function gui_click_control(event)
+function akka(player_index)
+  return global.akka.players[player_index]
+end
+
+function gui_control(event)
   local player = game.players[event.player_index]
-  local akkaPlayer = global.akka.players[event.player_index]
+  local akkaPlayer = akka(event.player_index)
   local element = event.element
   if element.name == "akka-mouse-bits" then add_box(player, akkaPlayer)
   elseif element.name == "akka-mouse-bits-close" then add_button(player, akkaPlayer)
-  elseif element.name == "akka-onlyX-radio" then toggle_onlyX(player.index)
-  elseif element.name == "akka-onlyY-radio" then toggle_onlyY(player.index)
-  elseif element.name == "akka-onlyD-radio" then toggle_onlyD(player.index)
-  elseif element.name == "akka-reset-all" then axis_reset(player.index)
-  elseif element.name == "akka-patterns-state" then toggle_pattern(player.index)
+  elseif element.name == "akka-onlyX-radio" then toggle_onlyX(akkaPlayer)
+  elseif element.name == "akka-onlyY-radio" then toggle_onlyY(akkaPlayer)
+  elseif element.name == "akka-onlyD-radio" then toggle_onlyD(akkaPlayer)
+  elseif element.name == "akka-reset-all" then general_reset(akkaPlayer)
   elseif string.sub(element.name, 1, -2) == "akka-pattern-check-" then
     update_pattern(akkaPlayer, tonumber(string.sub(element.name, -1)), element.state)
+  elseif string.sub(element.name, 1, 13) == "akka-spinner-" then
+    spinner_control(akkaPlayer, element.parent.parent, string.sub(element.name, 14))
+  elseif element.name == "counter" then
+    spinner_control(akkaPlayer, element.parent, "counter")
   end
 end
 
-function reset_base(player_index)
-  local akkaPlayer = global.akka.players[player_index]
+function update_guis(akkaPlayer)
+  update_axis_gui(akkaPlayer)
+  update_pattern_gui(akkaPlayer)
+end
+
+function reset_base(akkaPlayer)
   akkaPlayer.item = nil
   akkaPlayer.direction = nil
   akkaPlayer.position = {}
 end
 
-local function set_base(player, akkaPlayer, entity)
+function general_reset(akkaPlayer)
+  reset_xyd(akkaPlayer)
+  reset_pattern(akkaPlayer)
+  update_guis(akkaPlayer)
+end
+
+local function set_base(akkaPlayer, entity)
   if akkaPlayer.item ~= entity.name or
     akkaPlayer.direction ~= entity.direction then
-    reset_base(player.index)
+    reset_base(akkaPlayer)
     akkaPlayer.item = entity.name
     akkaPlayer.direction = entity.direction
     akkaPlayer.position = entity.position
   end
 end
 
+function on_cursor_change(event)
+  local player = game.players[event.player_index]
+  local akkaPlayer = akka(event.player_index)
+  if not player.cursor_stack.valid_for_read or
+    (akkaPlayer.item ~= nil and
+    player.cursor_stack.name ~= akkaPlayer.item) then
+    general_reset(akkaPlayer)
+  end
+end
+
 function build_event_control(event)
   local player = game.players[event.player_index]
   local entity = event.created_entity
-  local akkaPlayer = global.akka.players[event.player_index]
+  local akkaPlayer = akka(event.player_index)
   if akkaPlayer.onlyX or
     akkaPlayer.onlyY or
     akkaPlayer.onlyD or
-    akkaPlayer.patternState then
+    akkaPlayer.spacing > 0 or
+    akkaPlayer.patternSlots > 0 then
     if akkaPlayer.item ~= entity.name or
       akkaPlayer.direction ~= entity.direction then
-      set_base(player, akkaPlayer, entity)
+      set_base(akkaPlayer, entity)
     end
     local axis_entity = axis_build(player, entity, akkaPlayer)
-    if axis_entity and akkaPlayer.patternState then
+    if axis_entity and akkaPlayer.patternSlots > 0 or akkaPlayer.spacing > 0 then
       pattern_build(player, axis_entity, akkaPlayer)
     end
   end

@@ -1,34 +1,25 @@
-function reset_xyd(player_index)
-  global.akka.players[player_index].onlyX = false
-  global.akka.players[player_index].onlyY = false
-  global.akka.players[player_index].onlyD = false
-  reset_base(player_index)
+function reset_xyd(akkaPlayer)
+  akkaPlayer.onlyX = false
+  akkaPlayer.onlyY = false
+  akkaPlayer.onlyD = false
+  reset_base(akkaPlayer)
 end
 
-function toggle_onlyX(player_index)
-  local akkaPlayer = global.akka.players[player_index]
-  reset_xyd(player_index)
+function toggle_onlyX(akkaPlayer)
+  reset_xyd(akkaPlayer)
   akkaPlayer.onlyX = true
   update_axis_gui(akkaPlayer)
 end
 
-function toggle_onlyY(player_index)
-  local akkaPlayer = global.akka.players[player_index]
-  reset_xyd(player_index)
+function toggle_onlyY(akkaPlayer)
+  reset_xyd(akkaPlayer)
   akkaPlayer.onlyY = true
   update_axis_gui(akkaPlayer)
 end
 
-function toggle_onlyD(player_index)
-  local akkaPlayer = global.akka.players[player_index]
-  reset_xyd(player_index)
+function toggle_onlyD(akkaPlayer)
+  reset_xyd(akkaPlayer)
   akkaPlayer.onlyD = true
-  update_axis_gui(akkaPlayer)
-end
-
-function axis_reset(player_index)
-  local akkaPlayer = global.akka.players[player_index]
-  reset_xyd(player_index)
   update_axis_gui(akkaPlayer)
 end
 
@@ -38,19 +29,9 @@ function update_axis_gui(akkaPlayer)
     akkaPlayer.gui.valid and
     akkaPlayer.gui.name == "akka_box" then
     local gui = akkaPlayer.gui
-    gui.onlyX["akka-onlyX-radio"].state = akkaPlayer.onlyX
-    gui.onlyY["akka-onlyY-radio"].state = akkaPlayer.onlyY
-    gui.onlyD["akka-onlyD-radio"].state = akkaPlayer.onlyD
-  end
-end
-
-function on_cursor_change(event)
-  local player = game.players[event.player_index]
-  local akkaPlayer = global.akka.players[event.player_index]
-  if not player.cursor_stack.valid_for_read or
-    (akkaPlayer.item ~= nil and
-    player.cursor_stack.name ~= akkaPlayer.item) then
-    axis_reset(event.player_index)
+    gui.axis.onlyX["akka-onlyX-radio"].state = akkaPlayer.onlyX
+    gui.axis.onlyY["akka-onlyY-radio"].state = akkaPlayer.onlyY
+    gui.axis.onlyD["akka-onlyD-radio"].state = akkaPlayer.onlyD
   end
 end
 
