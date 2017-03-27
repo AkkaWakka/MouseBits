@@ -5,9 +5,9 @@ Makes life easier by letting you just click and drag!
 - Define and place entities in simple patterns without having to place everything individually.
 
 The first item placed sets the base.
-- If you've enable an axis restriction, enties not placed on the same x, y, or diagonal line as the base will be moved to that line (e.g. long belts).
-- If you've defined a pattern, enties are only placed if they fit the pattern (e.g. inserters).
-- If you've set a spacing, enties will only be placed that far apart (e.g. chemical plants).
+- If you've enable an axis restriction, entities not placed on the same x, y, or diagonal line as the base will be moved to that line (e.g. long belts).
+- If you've defined a pattern, entities are only placed if they fit the pattern (e.g. inserters).
+- If you've set a spacing, entities will only be placed that far apart (e.g. chemical plants).
 
 You can have any combination of these.  For example, inserters placed every 2 tiles apart, skipping every 6th inserter, in a diagonal line.
 
@@ -65,5 +65,5 @@ You cannot place items beyond your reach.
 - Hotkey Derp.  Fixed Now.
 
 #### 0.3.0 - Patterns!
-- Added patterns of up to 8 enties in a straight line.
+- Added patterns of up to 8 entities in a straight line.
 - Added spacing between entites.
