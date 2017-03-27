@@ -1,18 +1,28 @@
 ## Description:
-Lets you restrict item placement in North/South, East/West, and diagonal lines Northeast/Southwest & Northwest/Southeast), making it easier to place things in straight lines without having to hold the mouse still and walk in a direction.
+Makes life easier by letting you just click and drag!
 
-The first item placed sets the base for the restriction, with further items only allowed on the same x, y, or diagonal line as the base.
+- Restrict placement to either Up/Down, Left/Right, or Diagonals.
+- Define and place entities in simple patterns without having to place everything individually.
 
-Items placed at an offset from the allowed line will be moved to the allowed line at the closest point from where you placed the item. You cannot place items beyond your reach.
+The first item placed sets the base.
+- If you've enable an axis restriction, enties not placed on the same x, y, or diagonal line as the base will be moved to that line (e.g. long belts).
+- If you've defined a pattern, enties are only placed if they fit the pattern (e.g. inserters).
+- If you've set a spacing, enties will only be placed that far apart (e.g. chemical plants).
 
-Placement restrictions can be controlled with either hotkeys or a GUI, and will be reset when your hand empties, or you change or rotate items.
+You can have any combination of these.  For example, inserters placed every 2 tiles apart, skipping every 6th inserter, in a diagonal line.
+
+Everything can be set through a simple GUI, or hotkeys to set the axis restrictions and reset everything.
 
 If you have any comments, suggestions, etc., I'd really appreciate your feedback: [Factorio Forum Post](https://forums.factorio.com/viewtopic.php?f=97&t=42641) | [GitHub Issues](https://github.com/AkkaWakka/MouseBits/issues).
 
 ## Controls:
-Pressing a hotkey will enable its restriction (regardless of what restriction is currently active), pressing the same hotkey again will reset the base.  Pressing the reset button will remove any active restriction.  There is a hotkey to reset only the item base.
+The GUI can be accessed by clicking the mouse pointer button on the top of the screen.  Changing anything will reset the base.  Pressing the remove restriction button will remove all active restrictions/patterns.
 
-The GUI can be accessed by pressing the mouse pointer button on the left of the screen.  It has toggles for all the restrictions, and will indicate the current restriction state.  Clicking an already applied restriction will reset the base.  Pressing the remove restriction button will remove any active restriction.
+Pressing a hotkey will enable that restriction (regardless of what axis restriction is currently active), pressing the same hotkey again will reset the base.  Pressing the reset button will remove any axis & pattern restriction.  There is a hotkey to reset only the item base.
+
+Spacing will add space between every item in a pattern (not between patterns), including blanks.  To get an idea of how this works, use an 8 entity pattern with only 1 blank in the middle, and spacing set to 1.
+
+You cannot place items beyond your reach.
 
 ## Default Hotkeys:
 - Restrict to X line: Shift + X
@@ -25,8 +35,7 @@ The GUI can be accessed by pressing the mouse pointer button on the left of the 
 - Extra sounds and dust sprites when placing something. This is due to the way the building restriction is applied (entities are copied, and the original is deleted).
 
 ## Planned Features:
-- Support for placement in patterns (e.g. only place every 5th or only 2 out of 4 (I'm looking at you inserters), etc.). This may involve some technology, but I'm not looking to replace blueprints.
-- Definable gap between placements (e.g. every 3 tiles).  Would be nice to tie this in with the patterns idea (e.g. a 5 tile patter is repeated every 10 tiles).
+- Tech to increase the max number of pattern slots (probably starting at 4 and finishing at 8).  Either way, patterns will always be unlocked.
 - Click and drag settings copying (Shift + Right Click -> Shift + Left Click).
 
 ## Changelog:
@@ -56,4 +65,5 @@ The GUI can be accessed by pressing the mouse pointer button on the left of the 
 - Hotkey Derp.  Fixed Now.
 
 #### 0.3.0 - Patterns!
-
+- Added patterns of up to 8 enties in a straight line.
+- Added spacing between entites.
