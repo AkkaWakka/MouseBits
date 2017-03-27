@@ -5,7 +5,7 @@
   "author": "Akka-Wakka",
   "contact": "",
   "homepage": "https://github.com/AkkaWakka/MouseBits",
-  "description": "Variouse tweaks for placing things with the mouse.",
+  "description": "Force placement in straigt lines, in patterns, or with spacing.",
   "factorio_version": "0.14",
   "dependencies": ["base >= 0.14"]
 }
